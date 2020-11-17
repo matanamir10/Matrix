@@ -4,8 +4,9 @@ export const generateRandomMatrix = (req: Request, res: Response) => {
   res.send('generate matrix');
 };
 
-export const multiplication = (req: Request, res: Response) => {
-  res.send('multiplication');
+export const uploadFormultiplication = (req: Request, res: Response) => {
+  console.log(req.file);
+  res.send('uploadFormultiplication');
 };
 
 export const getMultiplicationResult = (req: Request, res: Response) => {
