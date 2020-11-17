@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(matrixRouter);
+app.use('/api/matrix', matrixRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
