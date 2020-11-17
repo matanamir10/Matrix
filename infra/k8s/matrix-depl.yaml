@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrix-depl
+spec:
+  selector:
+    matchLabels:
+      app: matrix
+  template:
+    metadata:
+      labels:
+        app: matrix
+    spec:
+      containers:
+      - name: matrix
+        image: matan10/matrix
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-srv
+spec:
+  selector:
+    app: matrix
+  ports:
+  - port: 3000
+    targetPort: 3000
