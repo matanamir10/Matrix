@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import path from 'path';
 import { File } from '../models/File';
-import { MatrixCell } from '../models/MatrixCell';
 import { MatrixReader } from '../readers/MatrixReader';
 
 export const generateRandomMatrix = (req: Request, res: Response) => {
@@ -37,32 +36,23 @@ export const getMultiplicationResult = async (req: Request, res: Response) => {
       path.join(__dirname, '..', 'uploads', 'matrix2.txt')
     );
     await Promise.all([matrixReader1.load(), matrixReader2.load()]);
-    // console.log('matrix1', matrixReader1.matrix);
-    // console.log('matrxi 2', matrixReader2.matrix);
     const { matrix: matrix1 } = matrixReader1;
     const { matrix: matrix2 } = matrixReader2;
-    const results: MatrixCell[] = [],
-      ITERATION_NUMBER = matrix1.length * 2;
-    let sum = 0,
-      k = 0,
-      index = 0;
-    for (let i = 0; i < ITERATION_NUMBER; i++) {
-      for (let j = 0; j < matrix2.length; j++) {
-        index = i;
-        if (i >= matrix1.length) {
-          index = i - matrix1.length;
+    const aNumRows = matrix1.length,
+      aNumCols = matrix1[0].length,
+      bNumRows = matrix2.length,
+      bNumCols = matrix2[0].length,
+      m = new Array(aNumRows);
+    for (var r = 0; r < aNumRows; ++r) {
+      m[r] = new Array(bNumCols);
+      for (var c = 0; c < bNumCols; ++c) {
+        m[r][c] = 0;
+        for (var i = 0; i < aNumCols; ++i) {
+          m[r][c] += matrix1[r][i] * matrix2[i][c];
         }
-        sum += matrix1[index][j] * matrix2[j][k];
-      }
-      console.log(k, sum);
-      results.push(new MatrixCell(sum, { x: k, y: index }));
-      sum = 0;
-      if (i + 1 === matrix1.length) {
-        // * if this is equal we need to start new iteration
-        k++;
       }
     }
-    console.log('result', results);
+    res.send(m);
   } catch (error) {
     throw new Error(`Cannot calcaulte marices: ${error.message}`);
   }
