@@ -1,4 +1,4 @@
 export interface DataReader {
-  read(): void;
+  read(): Promise<void>;
   data: string[][];
 }
