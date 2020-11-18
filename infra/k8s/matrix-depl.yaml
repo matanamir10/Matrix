@@ -14,9 +14,6 @@ spec:
       containers:
       - name: matrix
         image: matan10/matrix
-        env:
-          - name: MATRIX_LIMIT_NUMBER
-            value: "100"
         ports:
         - containerPort: 3000
 

@@ -4,9 +4,8 @@ import { File } from '../models/File';
 import { MatrixReader } from '../readers/MatrixReader';
 
 export const generateRandomMatrix = (req: Request, res: Response) => {
-  const limitNumber = +process.env.MATRIX_LIMIT_NUMBER!;
-  console.log(limitNumber, typeof limitNumber);
   const { rows, columns } = req.body;
+  for (let i = 0; i < rows; i++) {}
 };
 
 export const uploadFormultiplication = async (req: Request, res: Response) => {
