@@ -2,10 +2,35 @@ import { Request, Response } from 'express';
 import path from 'path';
 import { File } from '../models/File';
 import { MatrixReader } from '../readers/MatrixReader';
+import fs from 'fs';
 
-export const generateRandomMatrix = (req: Request, res: Response) => {
+export const generateRandomMatrix = async (req: Request, res: Response) => {
   const { rows, columns } = req.body;
-  for (let i = 0; i < rows; i++) {}
+  const PREFIX = ',';
+  let data = ``;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      const rnd = Math.round(Math.random() * 1000);
+      if (j + 1 === columns) {
+        data = data.concat(`${rnd.toString()}`);
+      } else {
+        data = data.concat(`${rnd.toString()}${PREFIX}`);
+      }
+    }
+    data = data.concat('\n');
+  }
+  await File.write(
+    path.join(__dirname, '..', 'uploads', 'generate.txt'),
+    Buffer.from(data)
+  );
+  fs.createReadStream(
+    path.join(__dirname, '..', 'uploads', 'generate.txt')
+  ).pipe(res);
+
+  // * Can download as a txt file
+  //   res.download(path.join(__dirname, '..', 'uploads', 'generate.txt'), (err) => {
+  //     console.log(err);
+  //   });
 };
 
 export const uploadFormultiplication = async (req: Request, res: Response) => {
@@ -21,6 +46,7 @@ export const uploadFormultiplication = async (req: Request, res: Response) => {
         matrixTwo.buffer
       ),
     ]);
+    res.status(201).send('Matrices was saved');
   } catch (error) {
     throw new Error(`upload failed: ${error.message}`);
   }
@@ -37,6 +63,11 @@ export const getMultiplicationResult = async (req: Request, res: Response) => {
     await Promise.all([matrixReader1.load(), matrixReader2.load()]);
     const { matrix: matrix1 } = matrixReader1;
     const { matrix: matrix2 } = matrixReader2;
+    console.log(matrix1[0].length);
+    console.log(matrix2.length);
+    if (!matrix1 || !matrix2 || matrix1[0].length !== matrix2.length) {
+      throw new Error('Matirx must be: m x n --- n x p');
+    }
     const aNumRows = matrix1.length,
       aNumCols = matrix1[0].length,
       bNumRows = matrix2.length,
