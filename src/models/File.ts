@@ -4,7 +4,10 @@ export class File {
   static async write(path: string, data: Buffer): Promise<void> {
     console.log(path);
     const lines = data.toString().split('\n');
-    const fileWriteStream = fs.createWriteStream(path, { encoding: 'utf-8' });
+    const fileWriteStream = fs.createWriteStream(path, {
+      encoding: 'utf-8',
+      flags: 'w',
+    });
     for (const line of lines) {
       console.log(line);
       const ableToWrite = fileWriteStream.write(line);
@@ -23,7 +26,7 @@ export class File {
         input: readStream,
       });
       rl.on('line', function (line) {
-        //   console.log(line);
+        console.log(line);
         data = data.concat(line).concat('\n');
         //Do your stuff ...
         //Then write to outstream

@@ -10,7 +10,7 @@ const router = express.Router();
 
 // TODO add express validator for checking...
 router.post('/generate', generateRandomMatrix);
-router.post('/upload', multer().single('file'), uploadFormultiplication);
+router.post('/upload', multer().array('files'), uploadFormultiplication);
 router.get('/multiplication', getMultiplicationResult);
 
 export { router as matrixRouter };

@@ -9,7 +9,11 @@ export class CsvFileReader implements DataReader {
 
   async read(): Promise<void> {
     const data = await File.read(this.filename);
-    this.data = data.split('\n').map((row: string): string[] => {
+    //   console.log('the data', data.split('\n').pop());
+    const transformed = data.split('\n');
+    transformed.pop();
+    console.log('transforme', transformed);
+    this.data = transformed.map((row: string): string[] => {
       return row.split(',');
     });
   }
