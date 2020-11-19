@@ -13,8 +13,6 @@ export const getMultiplicationResult = async (req: Request, res: Response) => {
     await Promise.all([matrixReader1.load(), matrixReader2.load()]);
     const { matrix: matrix1 } = matrixReader1;
     const { matrix: matrix2 } = matrixReader2;
-    console.log(matrix1[0].length);
-    console.log(matrix2.length);
     if (!matrix1 || !matrix2 || matrix1[0].length !== matrix2.length) {
       throw new Error('matrix must be: m x n --- n x p');
     }

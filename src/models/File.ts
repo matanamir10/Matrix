@@ -1,29 +1,20 @@
 import fs from 'fs';
 import readline from 'readline';
 export class File {
-  static async write(
-    path: string,
-    data: Buffer,
-    onData?: (data: string) => void
-  ): Promise<void> {
+  static async write(path: string, data: Buffer): Promise<void> {
     const lines = data.toString().split('\n');
     const fileWriteStream = fs.createWriteStream(path, {
       encoding: 'utf-8',
       flags: 'w',
     });
     for (const line of lines) {
-      console.log('in for');
       const ableToWrite = fileWriteStream.write(`${line}\n`, 'utf-8');
-      if (onData) {
-        onData(`${line}\n`);
-      }
       if (!ableToWrite) {
         await new Promise((resolve) => {
           fileWriteStream.once('drain', resolve);
         });
       }
     }
-    console.log('resolved');
   }
 
   static read(path: string): Promise<string> {
@@ -34,7 +25,7 @@ export class File {
         input: readStream,
       });
 
-      rl.on('line', function (line) {
+      rl.on('line', (line) => {
         data = data.concat(line).concat('\n');
       });
 

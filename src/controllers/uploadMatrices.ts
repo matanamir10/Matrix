@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { File } from '../models/File';
 import path from 'path';
+import { File } from '../models/File';
 
 export const uploadFormultiplication = async (req: Request, res: Response) => {
   try {
