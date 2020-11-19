@@ -5,7 +5,7 @@ import { generateRandomMatrix } from '../controllers/generateMatrix';
 
 const router = express.Router();
 
-router.get(
+router.post(
   '/api/matrix/generate',
   [
     body('rows')
