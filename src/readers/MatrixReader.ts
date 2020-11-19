@@ -13,9 +13,7 @@ export class MatrixReader {
   async load(): Promise<void> {
     await this.reader.read();
     this.matrix = this.reader.data.map((row: string[]): number[] => {
-      console.log('row', row);
       return row.map((number) => +number);
     });
-    // this.matrix.pop();
   }
 }
