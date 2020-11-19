@@ -16,6 +16,6 @@ export class MatrixReader {
       console.log('row', row);
       return row.map((number) => +number);
     });
-    console.log(this.matrix);
+    // this.matrix.pop();
   }
 }

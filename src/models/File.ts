@@ -8,14 +8,22 @@ export class File {
       encoding: 'utf-8',
       flags: 'w',
     });
+    fileWriteStream.on('close', () => {
+      console.log('now is close');
+      return Promise.resolve();
+    });
     for (const line of lines) {
-      const ableToWrite = fileWriteStream.write(`${line}\n`);
+      console.log('in for');
+      const ableToWrite = fileWriteStream.write(`${line}\n`, 'utf-8');
+      console.log('able to write', ableToWrite);
       if (!ableToWrite) {
         await new Promise((resolve) => {
           fileWriteStream.once('drain', resolve);
         });
       }
     }
+    console.log('resolved');
+    // fileWriteStream.close();
   }
   static read(path: string): Promise<string> {
     return new Promise((resolve, reject) => {
